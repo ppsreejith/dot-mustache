@@ -3,7 +3,7 @@
 Allows you to use Mustache via dot notation.
 
 ```javascript
-const parser = require('DotMustache');
+const parser = require('dot-mustache');
 parser('body.text.crit.words', {
   body: {
     text: [{
