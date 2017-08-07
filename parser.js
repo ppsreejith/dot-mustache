@@ -1,7 +1,7 @@
 const Mustache = require('mustache');
 
-function dfs(arr) {
-  return (arr.length === 0) ? `"{{.}}",` : `{{#${arr[0]}}}${dfs(arr.slice(1))}{{/${arr[0]}}}`;
+function dfs(arr, index = 0) {
+  return (index === arr.length) ? `"{{.}}",` : `{{#${arr[index]}}}${dfs(arr, index+1)}{{/${arr[index]}}}`;
 }
 
 const regex = /,]/g;

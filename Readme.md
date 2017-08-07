@@ -4,18 +4,18 @@ Allows you to use Mustache via dot notation.
 
 ```javascript
 const parser = require('DotMustache');
-parser("body.text.crit.words", {
+parser('body.text.crit.words', {
   body: {
-  	text: [{
+    text: [{
       crit: {
-      	words: ["This works", "This too"],
-      }
+        words: ['This works', 'This too'],
+      },
     }, {
       crit: [{
-        words: "still works",
-      }]
-    }]
-  }
+        words: 'still works',
+      }],
+    }],
+  },
 });
 ```
 
