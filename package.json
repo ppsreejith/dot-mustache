@@ -11,5 +11,8 @@
     "dot"
   ],
   "author": "ppsreejith",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mustache": "^2.3.0"
+  }
 }
