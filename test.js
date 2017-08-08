@@ -8,7 +8,7 @@ let output = parser('body.text.crit.words', {
       },
     }, {
       crit: [{
-        words: 'still works',
+        words: {title: 'this is an object', toString: function() {return JSON.stringify(this).replace(/"/g, '\\\"')}},
       }],
     }],
   },
