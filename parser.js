@@ -23,7 +23,6 @@ function splitByChar(str, seperator) {
 function processArray(key, index = 0) {
   const newKey = key.slice(1, -1); // handle array here
   const arr = splitByChar(newKey, ',');
-//  console.log("Array is", arr);
   let jsonBuilder = [];
   for (const ind in arr) {
     jsonBuilder.push(`"${arr[ind]}": ${parse(arr[ind])}`);
@@ -47,7 +46,6 @@ function dfs(arr, index = 0) {
 
 function parse(str) {
   let keys = splitByChar(str, '.');
-//  console.log("Keys are", keys);
   return `[${dfs(keys)}]`;
 }
 
@@ -85,7 +83,6 @@ function fixTemplate(template) {
 function parser(initString, data) {
   const template = parse(initString);
   const rendered = Mustache.render(template, data);
-  console.log('Template is', rendered);
   return JSON.parse(fixTemplate(rendered));
 }
 
