@@ -84,7 +84,11 @@ function fixTemplate(template) {
 function parser(initString, data) {
   const template = parse(initString);
   const rendered = Mustache.render(template, data);
-  return rJSON.parse(fixTemplate(rendered));
+  try {
+    return rJSON.parse(fixTemplate(rendered));
+  } catch (e) {
+    return { parsingError: e };
+  }
 }
 
 function validator(str) {
