@@ -13,6 +13,7 @@
   "author": "ppsreejith",
   "license": "MIT",
   "dependencies": {
-    "mustache": "^2.3.0"
+    "mustache": "^2.3.0",
+    "relaxed-json": "^1.0.1"
   }
 }
