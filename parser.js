@@ -1,4 +1,5 @@
 const Mustache = require('mustache');
+const rJSON = require('relaxed-json');
 
 function splitByChar(str, seperator) {
   let bracketCounter = 0;
@@ -55,14 +56,14 @@ function fixTemplate(template) {
       regex: /,+/g,
       replace: ',',
     },
-    {
-      regex: /,]/g,
-      replace: ']',
-    },
-    {
-      regex: /,}/g,
-      replace: '}',
-    },
+    /* {
+     *   regex: /,]/g,
+     *   replace: ']',
+     * },
+     * {
+     *   regex: /,}/g,
+     *   replace: '}',
+     * },*/
     {
       regex: /}\"/g,
       replace: '}',
@@ -83,7 +84,7 @@ function fixTemplate(template) {
 function parser(initString, data) {
   const template = parse(initString);
   const rendered = Mustache.render(template, data);
-  return JSON.parse(fixTemplate(rendered));
+  return rJSON.parse(fixTemplate(rendered));
 }
 
 function validator(str) {

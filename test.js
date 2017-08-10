@@ -1,6 +1,6 @@
 const parser = require('./parser');
 
-let output = parser('body.text.crit.[a.b,b]', {
+let output = parser('body.text.crit.b', {
   body: {
     text: [
       {
@@ -11,6 +11,7 @@ let output = parser('body.text.crit.[a.b,b]', {
           },
           b: {
             b: 'na',
+            c: 'a.b.c',
             toString: function() { return JSON.stringify(this); },
           },
           toString: function() { return JSON.stringify(this); },
