@@ -65,6 +65,10 @@ function fixTemplate(template) {
      *   replace: '}',
      * },*/
     {
+      regex: /\\+/g,
+      replace: '',
+    },
+    {
       regex: /}\"/g,
       replace: '}',
     },
