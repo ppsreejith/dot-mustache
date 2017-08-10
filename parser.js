@@ -82,12 +82,14 @@ function fixTemplate(template) {
 }
 
 function parser(initString, data) {
-  const template = parse(initString);
-  const rendered = Mustache.render(template, data);
+  let fixed = null;
   try {
-    return rJSON.parse(fixTemplate(rendered));
+    const template = parse(initString);
+    const rendered = Mustache.render(template, data);
+    fixed = fixTemplate(rendered);
+    return rJSON.parse(fixed);
   } catch (e) {
-    return { parsingError: e };
+    return { parsingError: JSON.stringify(e), parsingString: fixed };
   }
 }
 
