@@ -1,18 +1,24 @@
 # DotMustache
 
-Allows you to use Mustache via dot notation.
+Allows you to use access arrays and objects via dot notation.
 
 ```javascript
 const parser = require('dot-mustache');
-parser('body.text.crit.words', {
+parser('body.text.crit.[words,something.here]', {
   body: {
     text: [{
       crit: {
         words: ['This works', 'This too'],
+        something: {
+          here: 'here this works',
+        },
       },
     }, {
       crit: [{
         words: 'still works',
+        something: {
+          here: 'here this works too',
+        },
       }],
     }],
   },
@@ -21,5 +27,11 @@ parser('body.text.crit.words', {
 
 This code snippet returns
 ```javascript
-[ 'This works', 'This too', 'still works' ]
+[{
+  'words': ['This works', 'This too'],
+  'something.here': 'here this works'
+} {
+  'words': 'still works',
+  'something.here': 'here this works too'
+}]
 ```
