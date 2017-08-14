@@ -1,6 +1,6 @@
-const parser = require('./parser');
+const {parser} = require('./parser');
 
-let output = parser('body.text.crit.b', {
+let output = parser('body.text.crit.[b,a]', {
   body: {
     text: [
       {

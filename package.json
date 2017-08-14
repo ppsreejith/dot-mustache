@@ -13,6 +13,7 @@
   "author": "ppsreejith",
   "license": "MIT",
   "dependencies": {
+    "lodash": "^4.17.4",
     "mustache": "^2.3.0",
     "relaxed-json": "^1.0.1"
   }
