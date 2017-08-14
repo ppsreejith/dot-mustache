@@ -1,10 +1,40 @@
 const _ = require('lodash');
 
 const MISSING_VALUE = undefined;
+const SEPERATOR = '.';
+
+function splitByChar(pattern, seperator) {
+  let bracketCounter = 0;
+  const token = '#$^$#';
+  const stringBuilder = [];
+  for (const ind in pattern) {
+    const ch = pattern[ind];
+    if (bracketCounter === 0 && ch === seperator) {
+      stringBuilder.push(token);
+    } else {
+      stringBuilder.push(ch);
+      if (ch === '[') {
+        bracketCounter += 1;
+      } else if (ch === ']') {
+        bracketCounter -= 1;
+      }
+    }
+  }
+  return stringBuilder.join('').split(token);
+}
 
 function followKeyPathInData({ keys, data, index }) {
   index = index || 0;
   const key = keys[index];
+  if (key.indexOf('[') === 0) {
+    const paths = splitByChar(key.slice(1, -1), ',');
+    const values = _.map(paths, path => followKeyPathInData({
+      keys: splitByChar(path, '.'),
+      data,
+      index: 0,
+    }));
+    return _.zipObject(paths, values);
+  }
 
   if (!data) {
     return MISSING_VALUE;
@@ -25,7 +55,7 @@ function followKeyPathInData({ keys, data, index }) {
 
 function parser(pattern, data) {
   pattern = pattern || '';
-  const keys = pattern.split('.');
+  const keys = splitByChar(pattern, SEPERATOR);
   return followKeyPathInData({ keys, data, index: 0 });
 }
 
@@ -37,7 +67,7 @@ function validator(pattern) {
       return false; // should contain space
     }
     if (ch === '[') {
-      if (pattern[ind - 1] !== '.') {
+      if (pattern[ind - 1] !== SEPERATOR) {
         return false; // array should be property of an object
       }
       bracketCounter += 1;
