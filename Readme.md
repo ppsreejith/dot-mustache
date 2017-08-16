@@ -1,9 +1,9 @@
 # DotMustache
 
-Allows you to use access arrays and objects via dot notation.
+Allows you to access arrays and objects via dot notation.
 
 ```javascript
-const parser = require('dot-mustache');
+const {parser} = require('dot-mustache');
 parser('body.text.crit.[words,something.here]', {
   body: {
     text: [{
