@@ -1,18 +1,22 @@
 const {parser} = require('./parser');
 
-let output = parser('body.text.[a.b,b]', {
+let output = parser('body.text.[crit.a.b,crit.b]', {
   body: {
     text: [
       {
-        a: {
-          b: 'lol',
-        },
-        b: {
-          b: 'na',
+        crit: {
+          a: {
+            b: 'lol',
+          },
+          b: {
+            b: 'na',
+          },
         },
       }, {
-        a: {
-          b: 'ha lol',
+        crit: {
+          a: {
+            b: 'ha lol',
+          },
         },
       }],
   },
