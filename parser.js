@@ -33,7 +33,17 @@ function followKeyPathInData({ keys, data, index }) {
       data,
       index: 0,
     }));
-    return _.zipObject(paths, values);
+    // Convert them to a format where for each path, each value is stored in values
+    const zippedValues = _.zip.apply(_, values);
+    const zippedObjects = [];
+    _.forEach(zippedValues, (zippedValue) => {
+      const zippedObject = {};
+      _.forEach(paths, (path, ind) => {
+        zippedObject[path] = zippedValue[ind];
+      });
+      zippedObjects.push(zippedObject);
+    });
+    return zippedObjects;
   }
 
   if (!data) {
