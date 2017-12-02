@@ -44,6 +44,8 @@ function zipIntoArrays({ key, data }) {
   return zippedObjects;
 }
 
+const mapAndFilter = (array, fn) => _.chain(array).map(fn).filter(x => x).value();
+
 function evaluateCondition({ key, data }) {
   const paths = splitByChar(key.slice(1, -1), ['?', ':']);
   const values = _.map(paths, path => followKeyPathInData({
@@ -52,12 +54,14 @@ function evaluateCondition({ key, data }) {
     index: 0,
   }));
   const condition = values[0];
-  const success = values[1];
-  const failure = values[2];
-  if (condition) {
-    return success;
+  const success = values[1] || MISSING_VALUE;
+  const failure = values[2] || MISSING_VALUE;
+  if (condition && condition.constructor === Array) {
+    return mapAndFilter(condition, (c, index) => c ?
+                                        success[index] || MISSING_VALUE :
+                                        failure[index] || MISSING_VALUE);
   }
-  return failure;
+  return condition ? success : failure;
 }
 
 function followKeyPathInData({ keys, data, index }) {
@@ -80,7 +84,7 @@ function followKeyPathInData({ keys, data, index }) {
     }
     return MISSING_VALUE;
   } else if (data.constructor === Array) {
-    return _.map(data, value => followKeyPathInData({ keys, data: value, index }));
+    return mapAndFilter(data, value => followKeyPathInData({ keys, data: value, index }));
   }
   return MISSING_VALUE;
 }
