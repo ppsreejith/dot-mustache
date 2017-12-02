@@ -3,19 +3,20 @@ const _ = require('lodash');
 const MISSING_VALUE = undefined;
 const SEPERATOR = '.';
 
-function splitByChar(pattern, seperator) {
+function splitByChar(pattern, seperators) {
+  seperators = _.castArray(seperators);
   let bracketCounter = 0;
   const token = '#$^$#';
   const stringBuilder = [];
   for (const ind in pattern) {
     const ch = pattern[ind];
-    if (bracketCounter === 0 && ch === seperator) {
+    if (bracketCounter === 0 && seperators.indexOf(ch) >= 0) {
       stringBuilder.push(token);
     } else {
       stringBuilder.push(ch);
-      if (ch === '[') {
+      if (ch === '[' || ch === '(') {
         bracketCounter += 1;
-      } else if (ch === ']') {
+      } else if (ch === ']' || ch === ')') {
         bracketCounter -= 1;
       }
     }
@@ -43,11 +44,29 @@ function zipIntoArrays({ key, data }) {
   return zippedObjects;
 }
 
+function evaluateCondition({ key, data }) {
+  const paths = splitByChar(key.slice(1, -1), ['?', ':']);
+  const values = _.map(paths, path => followKeyPathInData({
+    keys: splitByChar(path, '.'),
+    data,
+    index: 0,
+  }));
+  const condition = values[0];
+  const success = values[1];
+  const failure = values[2];
+  if (condition) {
+    return success;
+  }
+  return failure;
+}
+
 function followKeyPathInData({ keys, data, index }) {
   index = index || 0;
   const key = keys[index];
   if (key.indexOf('[') === 0) {
     return zipIntoArrays({ key, data, index });
+  } else if (key.indexOf('(') === 0) {
+    return evaluateCondition({ key, data, index });
   }
   if (!data) {
     return MISSING_VALUE;
