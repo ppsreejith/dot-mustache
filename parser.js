@@ -23,29 +23,32 @@ function splitByChar(pattern, seperator) {
   return stringBuilder.join('').split(token);
 }
 
+function zipIntoArrays({ key, data }) {
+  const paths = splitByChar(key.slice(1, -1), ',');
+  const values = _.map(paths, path => followKeyPathInData({
+    keys: splitByChar(path, '.'),
+    data,
+    index: 0,
+  }));
+  // Convert them to a format where for each path, each value is stored in values
+  const zippedValues = _.zip.apply(_, values);
+  const zippedObjects = [];
+  _.forEach(zippedValues, (zippedValue) => {
+    const zippedObject = {};
+    _.forEach(paths, (path, ind) => {
+      zippedObject[path] = zippedValue[ind];
+    });
+    zippedObjects.push(zippedObject);
+  });
+  return zippedObjects;
+}
+
 function followKeyPathInData({ keys, data, index }) {
   index = index || 0;
   const key = keys[index];
   if (key.indexOf('[') === 0) {
-    const paths = splitByChar(key.slice(1, -1), ',');
-    const values = _.map(paths, path => followKeyPathInData({
-      keys: splitByChar(path, '.'),
-      data,
-      index: 0,
-    }));
-    // Convert them to a format where for each path, each value is stored in values
-    const zippedValues = _.zip.apply(_, values);
-    const zippedObjects = [];
-    _.forEach(zippedValues, (zippedValue) => {
-      const zippedObject = {};
-      _.forEach(paths, (path, ind) => {
-        zippedObject[path] = zippedValue[ind];
-      });
-      zippedObjects.push(zippedObject);
-    });
-    return zippedObjects;
+    return zipIntoArrays({ key, data, index });
   }
-
   if (!data) {
     return MISSING_VALUE;
   } else if (data.constructor === Object) {
