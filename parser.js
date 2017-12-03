@@ -56,7 +56,7 @@ function evaluateCondition({ key, data }) {
   const condition = values[0];
   const success = values[1] || MISSING_VALUE;
   const failure = values[2] || MISSING_VALUE;
-  console.log(condition, '?', success, ':', failure);
+//  console.log(condition, '?', success, ':', failure);
   if (condition && condition.constructor === Array) {
     condition.length = Math.max(condition.length, _.get(success, 'length', 0), _.get(failure, 'length', 0));
     return mapAndFilter(condition, (c, index) => c ?
