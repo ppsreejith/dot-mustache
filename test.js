@@ -1,7 +1,8 @@
 const {parser} = require('./parser');
 
 //let output = parser('body.text.crit.(b?a.b:6)', {
-let output = parser('body.text.(crit.b?crit.a.b:6)', {
+//let output = parser('body.text.(crit.b?crit.b.b:crit.a.b)', {
+let output = parser('body.text.crit.(b?b.b:a.b)', {
   body: {
     text: [
       {
