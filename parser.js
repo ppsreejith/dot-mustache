@@ -54,11 +54,13 @@ function evaluateCondition({ key, data }) {
     index: 0,
   }));
   const condition = values[0];
-  const success = values[1] || MISSING_VALUE;
-  const failure = values[2] || MISSING_VALUE;
+  let success = values[1] || MISSING_VALUE;
+  let failure = values[2] || MISSING_VALUE;
 //  console.log(condition, '?', success, ':', failure);
   if (condition && condition.constructor === Array) {
     condition.length = Math.max(condition.length, _.get(success, 'length', 0), _.get(failure, 'length', 0));
+    success = success || {};
+    failure = failure || {};
     return mapAndFilter(condition, (c, index) => c ?
                                         success[index] || MISSING_VALUE :
                                         failure[index] || MISSING_VALUE);
