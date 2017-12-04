@@ -44,7 +44,7 @@ function zipIntoArrays({ key, data }) {
   return zippedObjects;
 }
 
-const mapAndFilter = (array, fn) => _.chain(array).map(fn).filter(x => x).value();
+const mapAndFilter = (array, fn) => _.chain(array).map(fn).filter(x => !_.isUndefined(x)).value();
 
 function evaluateCondition({ key, data }) {
   const paths = splitByChar(key.slice(1, -1), ['?', ':']);
@@ -88,7 +88,7 @@ function followKeyPathInData({ keys, data, index }) {
     }
     return MISSING_VALUE;
   } else if (data.constructor === Array) {
-    return mapAndFilter(data, value => followKeyPathInData({ keys, data: value, index }));
+    return _.map(data, value => followKeyPathInData({ keys, data: value, index }));
   }
   return MISSING_VALUE;
 }
